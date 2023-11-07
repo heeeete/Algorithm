@@ -7,15 +7,15 @@ const [N, M] = fs
 	.map((v) => Number(v));
 let arr = Array.from({ length: M }, () => 0);
 
-function temp(num, depth) {
+function backtrack(num, depth) {
 	if (depth === M) {
 		console.log(arr.join(" "));
 	} else {
 		for (let i = num; i <= N; i++) {
 			arr[depth] = i;
-			temp(i + 1, depth + 1);
+			backtrack(i + 1, depth + 1);
 		}
 	}
 }
 
-temp(1, 0);
+backtrack(1, 0);

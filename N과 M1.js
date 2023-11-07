@@ -8,7 +8,7 @@ const [N, M] = fs
 let arr = Array.from({ length: M }, () => 0);
 let visited = Array.from({ length: N }, () => 0);
 
-function temp(depth) {
+function backtrack(depth) {
 	if (depth === M) {
 		console.log(arr.join(" "));
 	} else {
@@ -16,11 +16,11 @@ function temp(depth) {
 			if (visited[i - 1] === 0) {
 				arr[depth] = i;
 				visited[i - 1] = 1;
-				temp(depth + 1);
+				backtrack(depth + 1);
 				visited[i - 1] = 0;
 			}
 		}
 	}
 }
 
-temp(0);
+backtrack(0);

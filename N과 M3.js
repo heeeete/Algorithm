@@ -8,14 +8,14 @@ const [N, M] = fs
 let arr = Array.from({ length: M }, () => 0);
 let arr2 = "";
 
-function temp(depth) {
+function backtrack(depth) {
 	if (depth === M) arr2 += arr.join(" ") + "\n";
 	else {
 		for (let i = 1; i <= N; i++) {
 			arr[depth] = i;
-			temp(depth + 1);
+			backtrack(depth + 1);
 		}
 	}
 }
-temp(0);
+backtrack(0);
 console.log(arr2);
