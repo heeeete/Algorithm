@@ -20,13 +20,13 @@ function ch(arr1, arr2, y, x) {
 		arr1[i][0] += y;
 		arr1[i][1] += x;
 	}
+	// console.log(arr1, "       ", arr2);
 
 	for (let i = 0; i < arr1.length; i++) {
 		for (let j = 0; j < 2; j++) {
 			if (arr1[i][j] !== arr2[i][j]) return false;
 		}
 	}
-	console.log(arr1, arr2);
 
 	return true;
 }
@@ -46,42 +46,50 @@ function solution(game_board, table) {
 	let piece = 0;
 	let emptysArr = [];
 
+	function move(i, j, rotateBoard) {
+		for (let k = 0; k < game_board.length; k++) {
+			for (let q = 0; q < game_board[0].length; q++) {
+				if (
+					ch(
+						coordinate[i].map((e) => [...e]),
+						emptysArr[j],
+						k,
+						q
+					)
+				) {
+					for (let idx of emptysArr[j]) {
+						rotateBoard[idx[0]][idx[1]] = 1;
+					}
+					flag = 1;
+					answer += emptysArr[j].length;
+					coordinate.splice(i, 1);
+					emptysArr.splice(j, 1);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	function dfs() {
 		let rotateBoard = game_board.map((e) => [...e]);
-		let flag = 0;
 
 		for (let i = 0; i < 4; i++) {
 			boardDFS(rotateBoard);
-			console.log(emptysArr, "비어있는거 ");
-			console.log(coordinate);
-			for (let i = 0; i < coordinate.length; i++) {
-				for (let j = 0; j < emptysArr.length; j++) {
-					for (let k = 0; k < game_board.length; k++) {
-						for (let q = 0; q < game_board[0].length; q++) {
-							if (
-								ch(
-									coordinate.map((e) => [...e]),
-									emptysArr[j],
-									k,
-									q
-								)
-							) {
-								for (let idx of emptysArr[j]) {
-									rotateBoard[idx[0]][idx[1]] = 1;
-								}
-								flag = 1;
-								answer += emptysArr[j].length;
-								coordinate.splice(i, 1);
-								emptysArr.splice(j, 1);
-								break;
-							}
-							if (flag) break;
-						}
-						if (flag) break;
+			for (let q = 0; q < emptysArr.length; q++) {
+				emptysArr[q].sort((a, b) => {
+					if (a[0] === b[0]) {
+						return a[1] - b[1];
 					}
-					if (flag) break;
+					return a[0] - b[0];
+				});
+			}
+			for (let k = 0; k < coordinate.length; k++) {
+				for (let j = 0; j < emptysArr.length; j++) {
+					if (coordinate[k].length === emptysArr[j].length) {
+						if (move(k, j, rotateBoard)) break;
+					}
 				}
-				if (flag) flag = 0;
 			}
 			rotateBoard = rotate90(rotateBoard);
 		}
@@ -188,6 +196,14 @@ function solution(game_board, table) {
 			}
 		}
 	});
+	coordinate = coordinate.map((e) =>
+		e.sort((a, b) => {
+			if (a[0] === b[0]) {
+				return a[1] - b[1];
+			}
+			return a[0] - b[0];
+		})
+	);
 
 	dfs();
 	return answer;
