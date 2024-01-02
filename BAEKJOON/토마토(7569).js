@@ -9,37 +9,54 @@ let map = fs
 	.map((v) => v.split(" ").map((v) => Number(v)));
 [size] = map.splice(0, 1);
 
-let queue = [];
-let visited = Array.from({ length: size[1] * size[2] }, () =>
-	Array(size[0]).fill(0)
-);
+let answer = 0;
+let deque = [];
+let deque2 = [];
 
-for (let i = 0; i < size[1] * size[2]; i++) {
-	for (let j = 0; j < size[0]; j++) {
+for (let i = 0; i < map.length; i++) {
+	for (let j = 0; j < map[0].length; j++) {
 		if (map[i][j] === 1) {
-			queue.push([i, j]);
-			visited[i][j] = 1;
+			deque.push([i, j]);
 		}
 	}
 }
 
-console.log(visited);
-return;
-while (queue.length) {
-	let len = queue.length;
+while (deque.length) {
+	let len = deque.length;
 	for (let i = 0; i < len; i++) {
-		const tomato = queue.shift();
+		const tomato = deque.pop();
+		let [y, x] = tomato;
 		for (let j = 0; j < 4; j++) {
-			let [y, x] = tomato;
 			if (
-				y + dy[i] >= 0 &&
-				x + dx[i] >= 0 &&
-				y + dy[i] < map.length &&
-				x + dx[i] < map[0].length
+				y + dy[j] >= 0 &&
+				x + dx[j] >= 0 &&
+				y + dy[j] < map.length &&
+				x + dx[j] < map[0].length &&
+				map[y + dy[j]][x + dx[j]] === 0 &&
+				~~(y / size[1]) === ~~((y + dy[j]) / size[1])
 			) {
-				map[y + dy[i]][x + dx[i]] = 1;
-				queue.push([y + dy[i], x + dx[i]]);
+				map[y + dy[j]][x + dx[j]] = 1;
+				deque2.push([y + dy[j], x + dx[j]]);
 			}
 		}
+		if (y + size[1] < map.length && map[y + size[1]][x] === 0) {
+			map[y + size[1]][x] = 1;
+			deque2.push([y + size[1], x]);
+		}
+		if (y - size[1] >= 0 && map[y - size[1]][x] === 0) {
+			map[y - size[1]][x] = 1;
+			deque2.push([y - size[1], x]);
+		}
+	}
+	deque = deque2.reverse();
+	deque2 = [];
+	if (deque.length) answer++;
+}
+
+for (let arr of map) {
+	for (let n of arr) {
+		if (n === 0) return console.log(-1);
 	}
 }
+
+console.log(answer);
