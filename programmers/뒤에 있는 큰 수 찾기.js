@@ -7,6 +7,7 @@ function solution(numbers) {
 		if (stack.length !== 0) answer[i] = stack.at(-1);
 		stack.push(numbers[i]);
 	}
+
 	return answer;
 }
 
