@@ -1,13 +1,13 @@
 function solution(x, y, n) {
 	var answer = 0;
-	var deque = [x];
+	var queue = [x];
 	let visited = Array.from({ length: 1000001 }, () => -1);
 
 	if (x === y) return 0;
 
-	while (deque.length) {
+	while (queue.length) {
 		let newDeque = [];
-		for (let num of deque) {
+		for (let num of queue) {
 			for (let number of [num + n, num * 2, num * 3]) {
 				if (visited[number] === -1) {
 					visited[number] = 0;
@@ -16,7 +16,7 @@ function solution(x, y, n) {
 				}
 			}
 		}
-		deque = newDeque;
+		queue = newDeque;
 		answer++;
 	}
 	return -1;
