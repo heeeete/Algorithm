@@ -28,7 +28,7 @@ class BinarySearchTree {
 					break;
 				}
 			}
-			if (current.idx[0] < idx[0]) {
+		    else {
 				if (current.right) current = current.right;
 				else {
 					current.right = node;
