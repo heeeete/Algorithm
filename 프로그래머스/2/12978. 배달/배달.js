@@ -12,17 +12,12 @@ function solution(N, road, K) {
 
 	for (let i = 0; i < N; i++) {
 		for (let j = 0; j < N; j++) {
+			if (j === i) continue;
 			for (let k = 0; k < N; k++) {
 				dist[j][k] = Math.min(dist[j][k], dist[j][i] + dist[i][k]);
 			}
 		}
 	}
 
-	console.log(dist);
-
-	for (let i = 0; i < N; i++) {
-		if (K >= dist[0][i]) answer++;
-	}
-
-	return answer;
+	return dist[0].filter((d) => K >= d).length;
 }
