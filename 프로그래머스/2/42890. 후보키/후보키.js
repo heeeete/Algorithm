@@ -16,11 +16,11 @@ function solution(relation) {
 		}
 		return 1;
 	}
-	const test = [];
+	const tempArr = [];
 
 	function dfs(arr, idx, cnt) {
 		if (arr.length === cnt) {
-			if (search(arr)) test.push(arr);
+			if (search(arr)) tempArr.push(arr);
 		}
 		for (let i = idx; i < relation[0].length; i++) {
 			dfs([...arr, i], i + 1, cnt);
@@ -31,7 +31,6 @@ function solution(relation) {
 		dfs([], 0, i);
 	}
 
-	// console.log(test);
 	const map = new Map();
 
 	function checkDFS(target, arr, idx) {
@@ -40,28 +39,19 @@ function solution(relation) {
 			for (let i = 0; i < target.length; i++) {
 				if (arr.indexOf(i) === -1) temp += target[i];
 			}
-			// console.log("TEMP = ", temp, arr);
-			if (!map.has(temp)) {
-			} else return false;
+			if (map.has(temp)) return false;
 		}
 		for (let i = idx; i < target.length; i++) {
 			let flag = checkDFS(target, [...arr, i], i + 1);
-			// console.log(flag);
 			if (!flag) return false;
 		}
 		return true;
 	}
-	for (let e of test) {
-		// console.log(test[i]);
-		// console.log("EEEEEEEEEEEEEEEE = ", e);
+	for (let e of tempArr) {
 		let flag = checkDFS(e, [], 0);
 		if (flag) {
-			// console.log(e, flag);
 			answer++;
 			map.set(e.join(""), 0);
-			// console.log(map);
-		} else {
-			// console.log("FALSE asdasd ", e);
 		}
 	}
 
