@@ -13,6 +13,5 @@ function solution(prices) {
 		}
 		answer.push(time);
 	}
-
 	return answer;
 }
