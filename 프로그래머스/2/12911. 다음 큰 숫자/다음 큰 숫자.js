@@ -1,13 +1,6 @@
 function solution(n) {
-	const a = n.toString(2);
-	const cnt = a.match(/1/g).length;
-
-	let i = n + 1;
-
-	for (; ; i++) {
-		const temp = i.toString(2);
-		if (temp.match(/1/g).length === cnt) break;
+	const cnt = n.toString(2).match(/1/g).length;
+	for (i = n + 1; ; i++) {
+		if (i.toString(2).match(/1/g).length === cnt) return i;
 	}
-
-	return i;
 }
