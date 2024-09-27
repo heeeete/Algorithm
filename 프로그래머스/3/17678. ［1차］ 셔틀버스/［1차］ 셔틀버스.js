@@ -1,5 +1,10 @@
+function convertTime(time) {
+	const hour = String(Math.floor(time / 60)).padStart(2, 0);
+	const minute = String(time % 60).padStart(2, 0);
+	return `${hour}:${minute}`;
+}
+
 function solution(n, t, m, timetable) {
-	var answer = "";
 	let curr = 540;
 	let last = -1;
 	timetable = timetable.map((e) => {
@@ -14,15 +19,10 @@ function solution(n, t, m, timetable) {
 			if (timetable[timetable.length - 1] <= curr) last = timetable.pop() - 1;
 			else break;
 		}
-		if (i === n - 1 && ii !== m)
-			return `${String(Math.floor(curr / 60)).padStart(2, 0)}:${String(
-				curr % 60
-			).padStart(2, 0)}`;
+		if (i === n - 1 && ii !== m) return convertTime(curr);
 		curr += t;
 	}
 
 	curr -= t;
-	const hour = String(Math.floor(last / 60)).padStart(2, 0);
-	const minute = String(last % 60).padStart(2, 0);
-	return `${hour}:${minute}`;
+	return convertTime(last);
 }
