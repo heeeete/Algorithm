@@ -41,7 +41,7 @@ function solution(maps) {
     const col = maps[0].length;
 
     // 2.
-    const visitCount = [...maps].map((r) => r.map((c) => 1));
+    const visitCount = maps.map(e => e.map(e => 1))
 
     // 3.
     const queue = [[0,0]];  //시작점
