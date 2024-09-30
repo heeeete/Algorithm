@@ -1,20 +1,16 @@
 function solution(m, n, puddles) {
-	const map = Array.from(Array(n), () => Array(m).fill(-1));
-	for (let i = 0; i < n; i++) map[i][0] = 1;
-	for (let i = 0; i < m; i++) map[0][i] = 1;
-
-	for (let [x, y] of puddles) {
-		x--, y--;
-		map[y][x] = 0;
-		if (y === 0) for (let i = x; i < m; i++) map[0][i] = 0;
-		else if (x === 0) for (let i = y; i < n; i++) map[i][0] = 0;
-	}
-
-	for (let i = 1; i < n; i++) {
-		for (let j = 1; j < m; j++) {
-			if (map[i][j] !== 0)
-				map[i][j] = (map[i - 1][j] + map[i][j - 1]) % 1000000007;
-		}
-	}
-	return map[n - 1][m - 1];
+    var answer = 0;
+    const map = Array(n + 1).fill(0).map(() => Array(m + 1).fill(0));
+    for (const [x,y] of puddles) map[y][x] = -1;
+    map[1][1] = 1;
+    for (let i = 1; i <= n; i++){
+        for (let j = 1; j <= m; j++){
+            if ((i === 1 && j === 1 )|| map[i][j] === -1) continue;
+            
+            if (map[i - 1][j] > 0) map[i][j] += map[i - 1][j] % 1000000007
+            if (map[i][j - 1] > 0) map[i][j] += map[i][j - 1] % 1000000007;
+        }
+    }
+    
+    return map[n][m] % 1000000007;
 }
