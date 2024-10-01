@@ -1,43 +1,30 @@
 function solution(n, edge) {
-	var answer = 0;
-	const nodes = Array.from(Array(n + 1), () => []);
-	const visited = Array.from(Array(n + 1), () => 0);
-	const distance = Array.from(Array(n + 1), () => 0);
-	for (let [start, end] of edge) {
-		nodes[start].push(end);
-		nodes[end].push(start);
-	}
+    var answer = 1;
+    const cnt = Array(n + 1).fill(0)
+    const graph = Array.from({length : n + 1}, () => Array(0).fill([]))
+    for (const [s,e] of edge){
+        graph[s].push(e)
+        graph[e].push(s)
+    }
+    const set = new Set();
+    set.add(1)
+    const q = [1]
 
-	const queue = nodes[1];
-	let dis = 0;
-	visited[1] = 1;
-	while (queue.length) {
-		const len = queue.length;
-		for (let i = 0; i < len; i++) {
-			let flag = 1;
-			const idx = queue.shift();
-			visited[idx] = 1;
-			for (let j = 0; j < nodes[idx].length; j++) {
-				const node = nodes[idx][j];
-				if (visited[node] === 0 && queue.indexOf(node) === -1) {
-					queue.push(node);
-					visited[node] = 1;
-					flag = 0;
-				}
-			}
-			if (flag) {
-				distance[idx] = dis + 1;
-			}
-		}
-		dis++;
-	}
-
-	distance.sort((a, b) => b - a);
-	const max = distance[0];
-	for (let i = 0; i < distance.length; i++) {
-		if (max === distance[i]) answer++;
-		else break;
-	}
-
-	return answer;
+    while (q.length){
+        const len = q.length;
+        for (let i = 0; i < len; i++){
+            const node = q.shift();
+            for (let j = 0; j < graph[node].length; j++){
+                if (!set.has(graph[node][j])){
+                    q.push(graph[node][j]);
+                    set.add(graph[node][j]);
+                    cnt[graph[node][j]] = answer;
+                }
+            }
+        }
+        answer++;
+    }
+    const max = Math.max(...cnt)
+    answer = cnt.filter(e => e === max).length;
+    return answer;
 }
