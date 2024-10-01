@@ -1,36 +1,32 @@
 function diff(begin, target){
-    let diffCnt = 0;
+    let cnt = 0;
     for (let i = 0; i < begin.length; i++){
-        if (begin[i] !== target[i]) {
-            diffCnt++;
-            if (diffCnt === 2) return false;
+        if (begin[i] !== target[i]){
+            cnt++
+            if (cnt === 2) return false;
         }
     }
-    return true
+    return true;
 }
 
 function solution(begin, target, words) {
-    var answer = Infinity;
-    const v = Array(words.length).fill(0);
+    var answer = 0;
+    const v = Array(words.length).fill(0)
+    const q = [begin];
     
-    function dfs(curr, idx, cnt){
-        
-        if (curr === target) answer = answer > cnt ? cnt : answer
-
-        for (let i = 0; i < words.length; i++){
-            if (!v[i] && diff(curr, words[i])) {
-                v[i] = 1;
-                dfs(words[i], i, cnt + 1)
-                v[i] = 0
+    while (q.length){
+        const len = q.length;
+        for (let i = 0; i < len; i++){
+            const str = q.shift();
+            for (let j = 0; j < words.length; j++){
+                if (diff(str, words[j]) && !v[j]){
+                    if (words[j] === target) return answer + 1
+                    v[j] = 1;
+                    q.push(words[j]);
+                }
             }
         }
+        answer++;
     }
-    
-    for (let i = 0; i < words.length; i++){
-        if (diff(begin, words[i])) {
-            v[i] = 1;
-            dfs(words[i], i, 1)
-        }
-    }
-    return answer === Infinity ? 0 : answer;
+    return 0;
 }
