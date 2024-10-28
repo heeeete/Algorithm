@@ -28,10 +28,7 @@ while (left <= right) {
 	if (sum > mid) blue++;
 
 	if (blue > input[1]) left = mid + 1;
-	else if (blue < input[1]) {
-		a.push(mid);
-		right = mid - 1;
-	} else {
+	else {
 		right = mid - 1;
 		a.push(mid);
 	}
